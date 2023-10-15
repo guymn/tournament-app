@@ -1,4 +1,5 @@
 name: Push Docker Image to Docker Hub
+config_variables_file_path: uncommitted/config_variables.yml
 
 on:
   push:
@@ -16,8 +17,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: guymn
-          password: dckr_pat_t9rkDC0z5xj-djvdwFnuzzhdLIw
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
