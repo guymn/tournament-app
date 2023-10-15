@@ -1,26 +1,32 @@
-# Use an official Node.js runtime as the base image
-FROM node:18
+# Stage 1: Build the Angular app
+FROM node:18 as build
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
+# Copy the package.json and package-lock.json files
 COPY package*.json ./
 
-# Install Angular CLI globally
+# Install the Angular CLI
 RUN npm install -g @angular/cli
 
 # Install project dependencies
 RUN npm install
 
-# Copy the entire Angular application code into the working directory
+# Copy the rest of the application code into the container
 COPY . .
 
-# Build the Angular application
+# Build the Angular application with the production flag
 RUN ng build --prod
 
-# Expose the default Angular port
-EXPOSE 4200
+# Stage 2: Create a smaller image for serving the app
+FROM nginx:alpine
 
-# Start the Angular application
-CMD ["ng", "serve", "--host", "0.0.0.0", "--port", "4200"]
+# Copy the built Angular app to the nginx directory
+COPY --from=build /app/dist/ /usr/share/nginx/html
+
+# Expose port 80 for the web server
+EXPOSE 80
+
+# Start the nginx web server
+CMD ["nginx", "-g", "daemon off;"]
