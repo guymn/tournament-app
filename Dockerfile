@@ -25,8 +25,8 @@ FROM nginx:alpine
 # Copy the built Angular app to the nginx directory
 COPY --from=build /app/dist/ /usr/share/nginx/html
 
-# Expose port 80 for the web server
-EXPOSE 80
+# Expose port 3000 for the web server
+EXPOSE 3000
 
 # Start the nginx web server
 CMD ["nginx", "-g", "daemon off;"]
