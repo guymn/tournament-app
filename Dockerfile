@@ -1,5 +1,5 @@
 # Stage 1: Build the Angular app
-FROM node:18 as build
+FROM node:18 as builder
 
 # Set the working directory in the container
 WORKDIR /app
@@ -16,8 +16,8 @@ RUN npm install
 # Copy the rest of the application code into the container
 COPY . .
 
-# Build the Angular application with the production flag
-RUN ng build --prod
+# Build the Angular application with the 'production' configuration
+RUN ng build --configuration=production
 
 # Stage 2: Create a smaller image for serving the app
 FROM nginx:alpine
@@ -25,8 +25,8 @@ FROM nginx:alpine
 # Copy the built Angular app to the nginx directory
 COPY --from=build /app/dist/ /usr/share/nginx/html
 
-# Expose port 3000 for the web server
-EXPOSE 3000
+# Expose port 420 for the web server
+EXPOSE 4200
 
 # Start the nginx web server
 CMD ["nginx", "-g", "daemon off;"]
