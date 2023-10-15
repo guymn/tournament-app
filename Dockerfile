@@ -16,9 +16,6 @@ RUN npm install
 # Copy the rest of the application code into the container
 COPY . .
 
-# Build the Angular application with the 'production' configuration
-RUN ng build --configuration=production
-
 # Stage 2: Create a smaller image for serving the app
 FROM nginx:alpine
 
