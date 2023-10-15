@@ -1,5 +1,4 @@
 name: Push Docker Image to Docker Hub
-config_variables_file_path: uncommitted/config_variables.yml
 
 on:
   push:
